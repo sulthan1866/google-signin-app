@@ -100,7 +100,7 @@ export default function RegisterForm() {
       setTimeout(() => {
         router.push('/login')
       }, 2000)
-    } catch (e) {
+    } catch {
       setError('Registration failed. Please try again.')
     } finally {
       setIsLoading(false)
@@ -114,7 +114,7 @@ export default function RegisterForm() {
       const user = await signInWithGoogle()
       setCurrentUser(user)
       router.push('/')
-    } catch (e) {
+    } catch {
       setError('Google registration failed. Please try again.')
     } finally {
       setIsLoading(false)

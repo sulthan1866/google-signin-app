@@ -7,13 +7,11 @@ import { auth } from "../firebase";
 
 const YOUR_FCM_SERVER_KEY = process.env.NEXT_PUBLIC_FCM_KEY;
 
-interface HomeProps {}
-
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
   const [deviceToken, setDeviceToken] = useState<string | null>(null);
-  const [notificationStatus, setNotificationStatus] = useState<string | null>(null);
+  const [notificationStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/save-token')
@@ -53,7 +51,7 @@ const Home: React.FC<HomeProps> = () => {
       }),
     });
 
-    const data = await res.json();
+    // const data = await res.json();
   };
 
   useEffect(() => {

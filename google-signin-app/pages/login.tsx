@@ -22,8 +22,7 @@ import {
 import {
   Email as EmailIcon,
   Lock as LockIcon,
-  Login as LoginIcon,
-  Google as GoogleIcon
+  Login as LoginIcon
 } from '@mui/icons-material'
 import { loginWithEmail } from '../utils/emailAuth'
 import { signInWithGoogle } from '../utils/googleAuth'
@@ -49,7 +48,7 @@ export default function LoginForm() {
       const user: User = await loginWithEmail(email, password)
       setCurrentUser(user)
       router.push('/')
-    } catch (e) {
+    } catch {
       setError('Login failed. Please check your credentials.')
     } finally {
       setIsLoading(false)
@@ -63,7 +62,7 @@ export default function LoginForm() {
       const user = await signInWithGoogle()
       setCurrentUser(user)
       router.push('/')
-    } catch (e) {
+    } catch{
       setError('Google login failed. Please try again.')
     } finally {
       setIsLoading(false)
@@ -112,7 +111,7 @@ export default function LoginForm() {
               Welcome back! Please sign in to your account
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Don't have an account?{' '}
+              {`Don't have an account? `}
               <Link href="/register" color="primary" sx={{ fontWeight: 600 }}>
                 Create one here
               </Link>
