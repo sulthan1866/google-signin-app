@@ -35,7 +35,7 @@ const Home: React.FC = () => {
       return;
     }
 
-    const res = await fetch('https://fcm.googleapis.com/fcm/send', {
+    await fetch('https://fcm.googleapis.com/fcm/send', {
       method: 'POST',
       headers: {
         Authorization: `key=${YOUR_FCM_SERVER_KEY}`,
