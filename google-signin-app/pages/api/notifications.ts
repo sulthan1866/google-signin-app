@@ -1,7 +1,7 @@
 // pages/api/send-notification.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const FCM_SERVER_KEY = process.env.FCM_SERVER_KEY || 'YOUR_FIREBASE_SERVER_KEY';
+const FCM_SERVER_KEY = process.env.NEXT_PUBLIC_FCM_KEY || 'YOUR_FIREBASE_SERVER_KEY';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
