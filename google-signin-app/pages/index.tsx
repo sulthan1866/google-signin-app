@@ -5,19 +5,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { auth } from "../firebase";
 
-const YOUR_FCM_SERVER_KEY = process.env.NEXT_PUBLIC_FCM_KEY;
-
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
-  const [deviceToken, setDeviceToken] = useState<string | null>(null);
   const [notificationStatus] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch('/api/save-token')
-      .then(res => res.json())
-      .then(data => setDeviceToken(data.token));
-  }, []);
 
   const handleSignOut = async (): Promise<void> => {
     try {
@@ -29,28 +20,23 @@ const Home: React.FC = () => {
   };
 
 
-  const sendNotification = async () => {
-    if (!deviceToken) {
-      alert('No device token found for current device');
-      return;
-    }
+const sendNotification = async () => {
+  const response = await fetch('/api/send-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: 'FCM_DEVICE_TOKEN_FROM_MOBILE',
+      title: 'Hello!',
+      body: 'This is a test notification.',
+    }),
+  });
 
-    await fetch('https://fcm.googleapis.com/fcm/send', {
-      method: 'POST',
-      headers: {
-        Authorization: `key=${YOUR_FCM_SERVER_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: deviceToken,
-        notification: {
-          title: 'Hello from google-signin-app',
-          body: 'This is a notification !',
-        },
-        priority: 'high',
-      }),
-    });
-  };
+  const data = await response.json();
+  console.log('Notification Response:', data);
+};
+
 
   useEffect(() => {
     if (!currentUser) {
