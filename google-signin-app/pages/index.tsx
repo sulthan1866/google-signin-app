@@ -9,7 +9,29 @@ const Home: React.FC = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
   const [notificationStatus] = useState<string | null>(null);
+  const [token,setToken] = useState<string>('')
 
+  useEffect(() => {
+    const getToken = async () => {
+      const res = await fetch('/api/save-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: 'DUMMY_TOKEN_FOR_DEMO' }), // Replace with real token
+      });
+
+      const data = await res.json();
+      if (data.token) {
+        setToken(data.token);
+        console.log('📱 Device token set in state:', data.token);
+      } else {
+        console.warn('No token returned from server.');
+      }
+    };
+
+    getToken();
+  }, []);
   const handleSignOut = async (): Promise<void> => {
     try {
       await signOut(auth);
@@ -21,13 +43,13 @@ const Home: React.FC = () => {
 
 
 const sendNotification = async () => {
-  const response = await fetch('/api/send-notification', {
+  const response = await fetch('/api/notifications', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      token: 'FCM_DEVICE_TOKEN_FROM_MOBILE',
+      token: token,
       title: 'Hello!',
       body: 'This is a test notification.',
     }),
