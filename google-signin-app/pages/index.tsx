@@ -29,30 +29,22 @@ const Home: React.FC = () => {
   };
 
 
-  const sendNotification = async () => {
-    if (!deviceToken) {
-      alert('No device token found for current device');
-      return;
-    }
+ const sendNotification = async () => {
+  const response = await fetch('/api/send-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: 'FCM_DEVICE_TOKEN_FROM_MOBILE',
+      title: 'Hello!',
+      body: 'This is a test notification.',
+    }),
+  });
 
-    await fetch('https://fcm.googleapis.com/fcm/send', {
-      method: 'POST',
-      headers: {
-        Authorization: `key=${YOUR_FCM_SERVER_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: deviceToken,
-        notification: {
-          title: 'Hello from google-signin-app',
-          body: 'This is a notification !',
-        },
-        priority: 'high',
-      }),
-    });
+await response.json();
+};
 
-    // const data = await res.json();
-  };
 
   useEffect(() => {
     if (!currentUser) {
